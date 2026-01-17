@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PokemonService } from './services/pokemon.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,17 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
+export class App implements OnInit{
   protected readonly title = signal('pokedex-app');
+
+  constructor(private pokemonService: PokemonService) {}
+
+  ngOnInit(): void {
+    this.test();
+  }
+
+  test(): void {
+    console.log(this.pokemonService.getPokemonList());
+  }
+
 }
