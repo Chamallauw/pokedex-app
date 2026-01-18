@@ -1,3 +1,7 @@
 .container {
     padding: 20px;
 }
+
+.card-type-img {
+    max-width: 100px;
+}
