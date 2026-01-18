@@ -1,7 +1,9 @@
+import { Type } from "./type.model";
+
 export class Pokemon {
     name: string;
     pokedexId: number;
-    types: string[] = [];
+    types: Type[] = [];
     sprite: string = "";
 
     constructor(name: string, pokedexId: number) {
@@ -14,8 +16,10 @@ export class Pokemon {
     }
 
     addType(type: string) {
-        if (!this.types.includes(type)) {
-            this.types.push(type)
+        const typeFound = Type.getTypeByName(type);
+
+        if (!this.types.includes(typeFound)) {
+            this.types.push(typeFound);
         }
     }
 
