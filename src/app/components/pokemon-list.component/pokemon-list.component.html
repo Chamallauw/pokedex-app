@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    @if (loading) {
+        <div class="alert alert-info" role="status">
+            Chargement des Pokémons...
+        </div>
+    }
+
+    <div class="container">
+        <div class="row">
+            @for (pokemon of pokemons; track pokemon.pokedexId) {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card text-center h-100">
+                        <img
+                            [src]="pokemon.sprite"
+                            [alt]="pokemon.name"
+                            class="card-img-top"
+                            loading="lazy">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pokemon.name | titlecase }}</h5>
+                            <div class="d-flex justify-content-center flex-wrap gap-2">
+                                @for (type of pokemon.types; track type) {
+                                    <span class="badge bg-primary text-capitalize">
+                                        {{ type }}
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

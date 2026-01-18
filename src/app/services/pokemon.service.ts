@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ApolloClient, HttpLink, InMemoryCache, gql } from "@apollo/client";
+import { Apollo, gql } from 'apollo-angular';
 import { Pokemon } from '../models/pokemon.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
-  private apiUrl = "https://graphql.pokeapi.co/v1beta2";
-  private client = new ApolloClient({
-    link: new HttpLink({ uri: this.apiUrl }),
-    cache: new InMemoryCache(),
-  });
 
+  constructor(private readonly apollo: Apollo) {}
 
-  getPokemonList() {
-    const pokemonList: Pokemon[] = [];
+  async getPokemonList() : Promise<Pokemon[]> {
+    
+    let pokemonList: Pokemon[] = [];
 
-    this.client.query({
+    await this.apollo.query({
       query: gql`
         {
           pokemons : pokemon(
@@ -60,7 +57,7 @@ export class PokemonService {
           }
         }
       `
-    }).then((result: any) => {
+    }).forEach((result: any) => {
       if (result.error) {
         throw new Error(result.error);
       }
@@ -84,7 +81,6 @@ export class PokemonService {
 
         pokemonList.push(pokemon);
       }
-
     });
 
     return pokemonList;

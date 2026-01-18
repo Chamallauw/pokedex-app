@@ -21,8 +21,8 @@ const {app, BrowserWindow} = require('electron')
         })
       );
 
-    // Open the DevTools.
-    //   mainWindow.webContents.openDevTools()
+      // Open the DevTools.
+      // mainWindow.webContents.openDevTools()
 
       mainWindow.on('closed', function () {
         mainWindow = null
