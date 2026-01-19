@@ -5,3 +5,7 @@
 .card-type-img {
     max-width: 100px;
 }
+
+.card-hoverable:hover {
+    cursor: pointer;
+}

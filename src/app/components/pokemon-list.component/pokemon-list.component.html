@@ -8,8 +8,9 @@
     <div class="container">
         <div class="row">
             @for (pokemon of pokemons; track pokemon.pokedexId) {
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card text-center h-100">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" >
+                    <div class="card text-center h-100 card-hoverable"
+                        (click)="selectPokemonDetail(pokemon.pokedexId)">
                         <img
                             [src]="pokemon.sprite"
                             [alt]="pokemon.name"
