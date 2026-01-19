@@ -65,15 +65,7 @@ export class PokemonService {
       const pokemons = result.data?.pokemons;
 
       for (let i=0; i<pokemons.length; i++) {
-        const pokemonId = pokemons[i].id;
-        const pokemonName = pokemons[i].pokemonspecy.pokemonspeciesnames[0]?.name;
-
-        const pokemon = new Pokemon(pokemonName, pokemonId);
-
-        const pokemonTypes = pokemons[i].types;
-        for (let j=0; j<pokemonTypes.length; j++) {
-          pokemon.addType(pokemonTypes[j].type.typenames[0]?.name);
-        }
+        const pokemon = this.parsePokemonFromApiResponse(pokemons[i]);
 
         if (pokemons[i].sprite[0].default) {
           pokemon.addSprite(pokemons[i].sprite[0].default);
@@ -84,6 +76,25 @@ export class PokemonService {
     });
 
     return pokemonList;
+  }
+
+  async getPokemonDetail() : Promise<Pokemon> {
+    throw new Error("not implemented yet");
+  }
+
+
+  private parsePokemonFromApiResponse(data: any) : Pokemon {
+    const pokemonId = data.id;
+    const pokemonName = data.pokemonspecy.pokemonspeciesnames[0]?.name;
+
+    const pokemon = new Pokemon(pokemonName, pokemonId);
+
+    const pokemonTypes = data.types;
+    for (let j=0; j<pokemonTypes.length; j++) {
+      pokemon.addType(pokemonTypes[j].type.typenames[0]?.name);
+    }
+
+    return pokemon;
   }
   
 }
