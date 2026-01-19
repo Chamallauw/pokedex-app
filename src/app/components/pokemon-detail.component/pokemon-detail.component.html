@@ -1,3 +1,28 @@
-<div class="p-2">
-    <p>You clicked on #{{this.id}}</p>
+<div class="container-fluid">
+    @if (loading) {
+        <div class="alert alert-info" role="status">
+            Chargement des informations du Pokémon #{{id}}...
+        </div>
+    }
+
+    @if (pokemon != undefined) {
+        <div class="container">
+            <img
+                [src]="pokemon.sprite"
+                [alt]="pokemon.name"
+                class="card-img-top"
+                loading="lazy">
+            <h1>{{ pokemon.name | titlecase }}</h1>
+            <div class="d-flex justify-content-center flex-wrap gap-2">
+                @for (type of pokemon.types; track type) {
+                    <img
+                        [src]="type.sprite"
+                        [alt]="type.name"
+                        class="card-type-img"
+                        loading="lazy">
+                }
+            </div>
+        </div>
+    }
+
 </div>

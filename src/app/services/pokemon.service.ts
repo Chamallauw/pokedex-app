@@ -78,7 +78,7 @@ export class PokemonService {
     return pokemonList;
   }
 
-  async getPokemonDetail() : Promise<Pokemon> {
+  async getPokemonDetail(pokemonId: number) : Promise<Pokemon> {
 
     let pokemon: Pokemon = new Pokemon("", 0);
 
@@ -87,9 +87,12 @@ export class PokemonService {
         {
           pokemons : pokemon(
             where:  {
-                is_default:  {
-                  _eq: true
-                }
+              is_default:  {
+                _eq: true
+              }
+              id:  {
+                _eq: ${pokemonId}
+              }
             }
             order_by: {id: asc}
           ) {
@@ -121,7 +124,7 @@ export class PokemonService {
               }
             }
             sprite: pokemonsprites {
-                default: sprites (path: "front_default")
+                official_artwork: sprites (path: "other.official-artwork.front_default")
             }
           }
         }
@@ -131,11 +134,11 @@ export class PokemonService {
         throw new Error(result.error);
       }
 
-      const pokemonData = result.data?.pokemon[0];
+      const pokemonData = result.data?.pokemons[0];
       pokemon = this.parsePokemonFromApiResponse(pokemonData);
 
-      if (pokemonData.sprite[0].default) {
-        pokemon.addSprite(pokemonData.sprite[0].default);
+      if (pokemonData.sprite[0].official_artwork) {
+        pokemon.addSprite(pokemonData.sprite[0].official_artwork);
       }
     });
 

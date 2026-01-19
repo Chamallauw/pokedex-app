@@ -1,11 +1,39 @@
-import { Component, Input as RouterInput } from '@angular/core';
+import { Component, Input as RouterInput, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PokemonService } from '../../services/pokemon.service';
+import { Pokemon } from '../../models/pokemon.model';
 
 @Component({
   selector: 'app-pokemon-detail.component',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './pokemon-detail.component.html',
   styleUrl: './pokemon-detail.component.css',
 })
-export class PokemonDetailComponent {
+export class PokemonDetailComponent implements OnInit{
   @RouterInput() id!: number;
+
+  pokemon: Pokemon | undefined = undefined;
+  loading: boolean = true;
+
+  constructor(private pokemonService: PokemonService, 
+    private readonly cdRef: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    this.loadPokemonDetail();
+  }
+
+  loadPokemonDetail(): void {
+    this.loading = true;
+
+    this.pokemonService.getPokemonDetail(this.id).then(
+      (pokemon: Pokemon) => {
+        this.pokemon = pokemon;
+        this.loading = false;
+
+        this.cdRef.detectChanges();
+      }
+    );
+  }
+
 }

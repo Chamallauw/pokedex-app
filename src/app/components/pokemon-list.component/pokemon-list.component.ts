@@ -38,7 +38,6 @@ export class PokemonListComponent implements OnInit {
   }
 
   selectPokemonDetail(pokemonId: number) {
-    console.log("navigate to /pokemon/" + pokemonId);
     this.router.navigate(["/pokemon", pokemonId]);
   }
 
