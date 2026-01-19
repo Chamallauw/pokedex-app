@@ -79,7 +79,67 @@ export class PokemonService {
   }
 
   async getPokemonDetail() : Promise<Pokemon> {
-    throw new Error("not implemented yet");
+
+    let pokemon: Pokemon = new Pokemon("", 0);
+
+    await this.apollo.query({
+      query: gql`
+        {
+          pokemons : pokemon(
+            where:  {
+                is_default:  {
+                  _eq: true
+                }
+            }
+            order_by: {id: asc}
+          ) {
+            id
+            pokemonspecy {
+                pokemonspeciesnames(
+                  where:  {
+                      language_id:  {
+                        _eq: 5
+                      }
+                  }
+                ) {
+                  name
+                }
+            }
+            types: pokemontypes (order_by: [ {
+                id: asc
+            }]) {
+              type {
+                typenames(
+                  where:  {
+                      language_id:  {
+                        _eq: 5
+                      }
+                  }
+                ) {
+                  name
+                }
+              }
+            }
+            sprite: pokemonsprites {
+                default: sprites (path: "front_default")
+            }
+          }
+        }
+      `
+    }).forEach((result: any) => {
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      const pokemonData = result.data?.pokemon[0];
+      pokemon = this.parsePokemonFromApiResponse(pokemonData);
+
+      if (pokemonData.sprite[0].default) {
+        pokemon.addSprite(pokemonData.sprite[0].default);
+      }
+    });
+
+    return pokemon;
   }
 
 
