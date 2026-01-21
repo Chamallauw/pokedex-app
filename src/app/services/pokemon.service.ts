@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Pokemon } from '../models/pokemon.model';
+import { PokemonStat } from '../models/pokemon-stat.model';
 
 @Injectable({
   providedIn: 'root',
@@ -126,6 +127,22 @@ export class PokemonService {
             sprite: pokemonsprites {
                 official_artwork: sprites (path: "other.official-artwork.front_default")
             }
+            pokemonstats (
+              order_by: {id: asc}
+            ) {
+              base_stat
+              name: stat {
+                  language: statnames (
+                    where:  {
+                          language_id:  {
+                              _eq: 5
+                          }
+                    }
+                  ) {
+                    name
+                  }
+              }
+            }
           }
         }
       `
@@ -136,6 +153,9 @@ export class PokemonService {
 
       const pokemonData = result.data?.pokemons[0];
       pokemon = this.parsePokemonFromApiResponse(pokemonData);
+
+      const pokemonStatsData = pokemonData.pokemonstats;
+      pokemon.setBaseStats(this.parsePokemonStatsFromApiResponse(pokemonStatsData));
 
       if (pokemonData.sprite[0].official_artwork) {
         pokemon.addSprite(pokemonData.sprite[0].official_artwork);
@@ -158,6 +178,18 @@ export class PokemonService {
     }
 
     return pokemon;
+  }
+
+  private parsePokemonStatsFromApiResponse(statsData: any) : PokemonStat[] {
+    let pokemonStats: PokemonStat[] = [];
+
+    for (let i=0; i<statsData.length; i++) {
+      pokemonStats.push(new PokemonStat(
+        statsData[i].name.language[0]?.name,
+        statsData[i].base_stat));
+    }
+
+    return pokemonStats;
   }
   
 }
