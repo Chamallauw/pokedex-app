@@ -23,4 +23,12 @@ export class Pokemon {
         }
     }
 
+    formatPokedexId() : string {
+        return Intl.NumberFormat('en-US',{
+            minimumIntegerDigits: 4,
+            maximumFractionDigits: 0,
+            useGrouping: false
+        }).format(this.pokedexId);
+    }
+
 }
