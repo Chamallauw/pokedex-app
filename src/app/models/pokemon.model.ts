@@ -1,9 +1,11 @@
+import { PokemonStat } from "./pokemon-stat.model";
 import { Type } from "./type.model";
 
 export class Pokemon {
     name: string;
     pokedexId: number;
     types: Type[] = [];
+    baseStats: PokemonStat[] = [];
     sprite: string = "";
 
     constructor(name: string, pokedexId: number) {
@@ -21,6 +23,14 @@ export class Pokemon {
         if (!this.types.includes(typeFound)) {
             this.types.push(typeFound);
         }
+    }
+
+    addBaseStat(stat: PokemonStat) {
+        this.baseStats.push(stat);
+    }
+
+    setBaseStats(stats: PokemonStat[]) {
+        this.baseStats = stats;
     }
 
     formatPokedexId() : string {
