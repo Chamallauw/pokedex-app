@@ -181,9 +181,9 @@ export class PokemonService {
   }
 
   private parsePokemonStatsFromApiResponse(statsData: any) : PokemonStat[] {
-    const pokemonStats: PokemonStat[] = [];
+    let pokemonStats: PokemonStat[] = [];
 
-    for (let i=0; i>statsData.length; i++) {
+    for (let i=0; i<statsData.length; i++) {
       pokemonStats.push(new PokemonStat(
         statsData[i].name.language[0]?.name,
         statsData[i].base_stat));

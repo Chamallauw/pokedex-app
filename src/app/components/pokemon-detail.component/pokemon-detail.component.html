@@ -8,14 +8,14 @@
     @if (pokemon != undefined) {
         <div class="container">
             <div class="row">
-                <div class="col-4" id="uno">
+                <div class="col-4">
                     <img
                         [src]="pokemon.sprite"
                         [alt]="pokemon.name"
                         class="card-img-top"
                         loading="lazy">
                 </div>
-                <div class="col-8" id="duet">
+                <div class="col-8">
                     <div>
                         <h1>N° {{ pokemon.formatPokedexId() }} - {{ pokemon.name | titlecase }}</h1>
                     </div>
@@ -29,6 +29,24 @@
                         }
                     </div>
                 </div>     
+            </div>
+            <div>
+                <h3>Stats</h3>
+                <div>
+                    @for (baseStat of pokemon.baseStats; track baseStat) {
+                        <div class="row">
+                            <div class="col-4">{{ baseStat.name }}</div>
+                            <div class="col-1 text-end">{{ baseStat.value }}</div>
+                            <div class="col-7">
+                                <div class="progress" role="progressbar" 
+                                    [aria-label]="baseStat.name" [aria-valuenow]="baseStat.value" 
+                                    [aria-valuemin]="getMinStatValue()" [aria-valuemax]="getMaxStatValue()">
+                                    <div class="progress-bar progress-bar-striped" [style.width.%]="baseStat.computeStatPercentage()"></div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     }

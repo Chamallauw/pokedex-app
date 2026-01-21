@@ -2,6 +2,7 @@ import { Component, Input as RouterInput, OnInit, ChangeDetectorRef } from '@ang
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
 import { Pokemon } from '../../models/pokemon.model';
+import { PokemonStat } from '../../models/pokemon-stat.model';
 
 import localeForNumberFormat from '@angular/common/locales/ca-FR';
 registerLocaleData(localeForNumberFormat);
@@ -37,6 +38,14 @@ export class PokemonDetailComponent implements OnInit{
         this.cdRef.detectChanges();
       }
     );
+  }
+
+  getMinStatValue() : number {
+    return PokemonStat.MIN_VALUE;
+  }
+
+  getMaxStatValue() : number {
+    return PokemonStat.MAX_VALUE;
   }
 
 }

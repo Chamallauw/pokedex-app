@@ -7,4 +7,8 @@ export class PokemonStat {
         public readonly value: number
     ) {}
 
+    computeStatPercentage() : number {
+        return (this.value / PokemonStat.MAX_VALUE) * 100;
+    }
+
 }
