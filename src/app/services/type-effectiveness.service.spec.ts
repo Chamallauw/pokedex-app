@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TypeEffectiveness } from './type-effectiveness';
+import { TypeEffectivenessService } from './type-effectiveness.service';
 
 describe('TypeEffectiveness', () => {
-  let service: TypeEffectiveness;
+  let service: TypeEffectivenessService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TypeEffectiveness);
+    service = TestBed.inject(TypeEffectivenessService);
   });
 
   it('should be created', () => {

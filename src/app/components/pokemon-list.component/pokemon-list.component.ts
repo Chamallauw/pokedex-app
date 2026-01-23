@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { PokemonService } from '../../services/pokemon.service';
+import { TypeEffectivenessMap, TypeEffectivenessService } from '../../services/type-effectiveness.service'
 import { Pokemon } from '../../models/pokemon.model';
 
 @Component({
@@ -17,11 +18,13 @@ export class PokemonListComponent implements OnInit {
   loading: boolean = true;
 
   constructor(private pokemonService: PokemonService, 
+    private typeEffectivenessService: TypeEffectivenessService,
     private readonly cdRef: ChangeDetectorRef,
     private router: Router) {}
   
   ngOnInit(): void {
     this.loadPokemons();
+    this.test();
   }
 
   loadPokemons(): void {
@@ -35,6 +38,14 @@ export class PokemonListComponent implements OnInit {
         this.cdRef.detectChanges();
       }
     );
+  }
+
+  test(): void {
+    this.typeEffectivenessService.getAllTypeEffectiveness().then(
+      (typeEffectivenessMap: TypeEffectivenessMap) => {
+        console.log(typeEffectivenessMap);
+      }
+    )
   }
 
   selectPokemonDetail(pokemonId: number) {

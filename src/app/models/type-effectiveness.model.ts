@@ -1,9 +1,10 @@
+// targetTypeId : damageFactor (in percentage)
+export type EffectivenessMap = { [targetTypeId: number]: number };
+
 export class TypeEffectiveness {
 
-    public typeEffectivenessTable: {
-        [typeId: number]: number;
-    } = {}
+    typeEffectivenessMap: EffectivenessMap = {}
 
-    constructor(public readonly attackTypeId: number) {}
+    constructor(readonly attackTypeId: number) {}
 
 }
