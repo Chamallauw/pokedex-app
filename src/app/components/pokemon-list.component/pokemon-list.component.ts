@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { PokemonService } from '../../services/pokemon.service';
 import { TypeEffectivenessMap, TypeEffectivenessService } from '../../services/type-effectiveness.service'
-import { Pokemon } from '../../models/pokemon.model';
+import { Pokemon } from '../../models/pokemon/pokemon.model';
 
 @Component({
   selector: 'app-pokemon-list',

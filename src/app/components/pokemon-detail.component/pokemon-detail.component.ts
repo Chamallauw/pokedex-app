@@ -1,8 +1,8 @@
 import { Component, Input as RouterInput, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
-import { Pokemon } from '../../models/pokemon.model';
-import { PokemonStat } from '../../models/pokemon-stat.model';
+import { Pokemon } from '../../models/pokemon/pokemon.model';
+import { PokemonStat } from '../../models/pokemon/pokemon-stat.model';
 
 import localeForNumberFormat from '@angular/common/locales/ca-FR';
 registerLocaleData(localeForNumberFormat);

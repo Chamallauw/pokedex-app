@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { Pokemon } from '../models/pokemon.model';
-import { PokemonStat } from '../models/pokemon-stat.model';
+import { Pokemon } from '../models/pokemon/pokemon.model';
+import { PokemonStat } from '../models/pokemon/pokemon-stat.model';
 
 @Injectable({
   providedIn: 'root',

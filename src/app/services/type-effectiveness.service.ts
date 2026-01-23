@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { TypeEffectiveness } from '../models/type-effectiveness.model';
+import { TypeEffectiveness } from '../models/type/type-effectiveness.model';
 
 export type TypeEffectivenessMap = { [attackTypeId: number]: TypeEffectiveness }
 
@@ -52,5 +52,7 @@ export class TypeEffectivenessService {
 
     return allTypeEffectiveness;
   }
+
+
 
 }

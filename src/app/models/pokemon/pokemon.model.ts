@@ -1,5 +1,5 @@
 import { PokemonStat } from "./pokemon-stat.model";
-import { Type } from "./type.model";
+import { Type } from "../type/type.model";
 
 export class Pokemon {
     name: string;
