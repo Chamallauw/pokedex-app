@@ -35,6 +35,8 @@ export class PokemonDetailComponent implements OnInit{
         this.pokemon = pokemon;
         this.loading = false;
 
+        console.log(this.pokemon.effectivenessMap);
+
         this.cdRef.detectChanges();
       }
     );
