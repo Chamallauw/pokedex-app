@@ -36,4 +36,14 @@ export class Type {
         }
     }
 
+    static getTypeById(typeId : number) : Type {
+        const typeFound = this.TYPES.find((type: Type) => type.id === typeId);
+        
+        if (typeFound) {
+            return typeFound;
+        } else {
+            return new Type("undefined",0,"undefined");
+        }
+    }
+
 }

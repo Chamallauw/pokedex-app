@@ -5,6 +5,7 @@ import { Pokemon } from '../../models/pokemon/pokemon.model';
 import { PokemonStat } from '../../models/pokemon/pokemon-stat.model';
 
 import localeForNumberFormat from '@angular/common/locales/ca-FR';
+import { Type } from '../../models/type/type.model';
 registerLocaleData(localeForNumberFormat);
 
 @Component({
@@ -48,6 +49,10 @@ export class PokemonDetailComponent implements OnInit{
 
   getMaxStatValue() : number {
     return PokemonStat.MAX_VALUE;
+  }
+
+  getTypeFromTypeId(typeId : number) : Type {
+    return Type.getTypeById(typeId);
   }
 
 }
