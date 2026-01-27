@@ -6,12 +6,14 @@ import { PokemonStat } from '../../models/pokemon/pokemon-stat.model';
 
 import localeForNumberFormat from '@angular/common/locales/ca-FR';
 import { Type } from '../../models/type/type.model';
+import { FractionPipe } from '../../pipes/fraction-pipe';
+import { TypeEffectiveness } from '../../models/type/type-effectiveness.model';
 registerLocaleData(localeForNumberFormat);
 
 @Component({
   selector: 'app-pokemon-detail.component',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FractionPipe],
   templateUrl: './pokemon-detail.component.html',
   styleUrl: './pokemon-detail.component.css',
 })
@@ -53,6 +55,13 @@ export class PokemonDetailComponent implements OnInit{
 
   getTypeFromTypeId(typeId : number) : Type {
     return Type.getTypeById(typeId);
+  }
+
+  getTypeEffectivenessColor(damageFactor : number) : string {
+    if (TypeEffectiveness.TYPE_EFFECTIVENESS_COLOR.get(damageFactor)) {
+      return TypeEffectiveness.TYPE_EFFECTIVENESS_COLOR.get(damageFactor) as string;
+    }
+    return "";
   }
 
 }
