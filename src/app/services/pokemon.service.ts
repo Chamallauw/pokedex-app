@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { Pokemon } from '../models/pokemon.model';
-import { PokemonStat } from '../models/pokemon-stat.model';
+import { Pokemon } from '../models/pokemon/pokemon.model';
+import { PokemonStat } from '../models/pokemon/pokemon-stat.model';
+import { TypeEffectivenessService } from './type-effectiveness.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
 
-  constructor(private readonly apollo: Apollo) {}
+  constructor(private readonly apollo: Apollo,
+    private readonly typeEffectivenessService: TypeEffectivenessService
+  ) {}
 
   async getPokemonList() : Promise<Pokemon[]> {
     
     let pokemonList: Pokemon[] = [];
 
-    await this.apollo.query({
+    const queryResult = await this.apollo.query<any>({
       query: gql`
         {
           pokemons : pokemon(
@@ -58,23 +61,24 @@ export class PokemonService {
           }
         }
       `
-    }).forEach((result: any) => {
-      if (result.error) {
-        throw new Error(result.error);
+    }).toPromise();
+    
+
+    if (queryResult?.error) {
+      throw queryResult?.error;
+    }
+
+    const pokemons = queryResult?.data.pokemons;
+
+    for (let i=0; i<pokemons.length; i++) {
+      const pokemon = this.parsePokemonFromApiResponse(pokemons[i]);
+
+      if (pokemons[i].sprite[0].default) {
+        pokemon.addSprite(pokemons[i].sprite[0].default);
       }
 
-      const pokemons = result.data?.pokemons;
-
-      for (let i=0; i<pokemons.length; i++) {
-        const pokemon = this.parsePokemonFromApiResponse(pokemons[i]);
-
-        if (pokemons[i].sprite[0].default) {
-          pokemon.addSprite(pokemons[i].sprite[0].default);
-        }
-
-        pokemonList.push(pokemon);
-      }
-    });
+      pokemonList.push(pokemon);
+    }
 
     return pokemonList;
   }
@@ -83,7 +87,7 @@ export class PokemonService {
 
     let pokemon: Pokemon = new Pokemon("", 0);
 
-    await this.apollo.query({
+    const queryResult = await this.apollo.query<any>({
       query: gql`
         {
           pokemons : pokemon(
@@ -146,21 +150,24 @@ export class PokemonService {
           }
         }
       `
-    }).forEach((result: any) => {
-      if (result.error) {
-        throw new Error(result.error);
-      }
+    }).toPromise();
 
-      const pokemonData = result.data?.pokemons[0];
-      pokemon = this.parsePokemonFromApiResponse(pokemonData);
+    if (queryResult?.error) {
+      throw queryResult?.error;
+    }
 
-      const pokemonStatsData = pokemonData.pokemonstats;
-      pokemon.setBaseStats(this.parsePokemonStatsFromApiResponse(pokemonStatsData));
+    const pokemonData = queryResult?.data.pokemons[0];
+    pokemon = this.parsePokemonFromApiResponse(pokemonData);
 
-      if (pokemonData.sprite[0].official_artwork) {
-        pokemon.addSprite(pokemonData.sprite[0].official_artwork);
-      }
-    });
+    const pokemonStatsData = pokemonData.pokemonstats;
+    pokemon.setBaseStats(this.parsePokemonStatsFromApiResponse(pokemonStatsData));
+
+    const pokemonTypeEffectiveness = await this.typeEffectivenessService.getPokemonTypeEffectiveness(pokemon.types);
+    pokemon.effectivenessMap = pokemonTypeEffectiveness;
+
+    if (pokemonData.sprite[0].official_artwork) {
+      pokemon.addSprite(pokemonData.sprite[0].official_artwork);
+    }
 
     return pokemon;
   }

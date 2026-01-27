@@ -1,11 +1,13 @@
 import { PokemonStat } from "./pokemon-stat.model";
-import { Type } from "./type.model";
+import { Type } from "../type/type.model";
 
 export class Pokemon {
     name: string;
     pokedexId: number;
     types: Type[] = [];
     baseStats: PokemonStat[] = [];
+    // attackTypeId : damageFactor (in factor)
+    effectivenessMap: Map<number, number> = new Map();
     sprite: string = "";
 
     constructor(name: string, pokedexId: number) {

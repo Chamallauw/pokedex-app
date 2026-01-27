@@ -1,16 +1,19 @@
 import { Component, Input as RouterInput, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { PokemonService } from '../../services/pokemon.service';
-import { Pokemon } from '../../models/pokemon.model';
-import { PokemonStat } from '../../models/pokemon-stat.model';
+import { Pokemon } from '../../models/pokemon/pokemon.model';
+import { PokemonStat } from '../../models/pokemon/pokemon-stat.model';
 
 import localeForNumberFormat from '@angular/common/locales/ca-FR';
+import { Type } from '../../models/type/type.model';
+import { FractionPipe } from '../../pipes/fraction-pipe';
+import { TypeEffectiveness } from '../../models/type/type-effectiveness.model';
 registerLocaleData(localeForNumberFormat);
 
 @Component({
   selector: 'app-pokemon-detail.component',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FractionPipe],
   templateUrl: './pokemon-detail.component.html',
   styleUrl: './pokemon-detail.component.css',
 })
@@ -35,6 +38,8 @@ export class PokemonDetailComponent implements OnInit{
         this.pokemon = pokemon;
         this.loading = false;
 
+        console.log(this.pokemon.effectivenessMap);
+
         this.cdRef.detectChanges();
       }
     );
@@ -46,6 +51,17 @@ export class PokemonDetailComponent implements OnInit{
 
   getMaxStatValue() : number {
     return PokemonStat.MAX_VALUE;
+  }
+
+  getTypeFromTypeId(typeId : number) : Type {
+    return Type.getTypeById(typeId);
+  }
+
+  getTypeEffectivenessColor(damageFactor : number) : string {
+    if (TypeEffectiveness.TYPE_EFFECTIVENESS_COLOR.get(damageFactor)) {
+      return TypeEffectiveness.TYPE_EFFECTIVENESS_COLOR.get(damageFactor) as string;
+    }
+    return "";
   }
 
 }
